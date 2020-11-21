@@ -1,0 +1,74 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+# This workflow will install Deno and run tests across stable and nightly builds on Windows, Ubuntu and macOS.
+# For more information see: https://github.com/denolib/setup-deno
+
+name: E2E tests
+
+on: [deployment_status]
+
+jobs:
+  set_pending:
+    name: Register pending E2E tests state
+    # This is the place where we define this job to only
+    # run when the deployment state is still "pending".
+    if: github.event.deployment_status.state == 'pending'
+    runs-on: ubuntu-latest
+
+    steps:
+      # This checks out the code of this repository.
+      # We need this because this is where our action
+      # lives.
+      - uses: actions/checkout@v1
+
+      - name: Set status to "pending"
+        uses: ./.github/actions/set-pr-status
+        env:
+          # You don't need to configure any secrets for this
+          # to work. GitHub injects the GITHUB_TOKEN automatically.
+          # We need it in this step so that our action
+          # can talk to the GitHub API.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          # This is where we define the inputs
+          # for this action.
+          state: pending
+          description: Waiting for E2E results
+
+# name: Test vercel
+
+# on:
+#   push:
+#     branches: [$default-branch]
+#   pull_request:
+#     branches: [$default-branch]
+
+# jobs:
+#   test:
+#     runs-on: ${{ matrix.os }} # runs a test on Ubuntu, Windows and macOS
+
+#     strategy:
+#       matrix:
+#         deno: ["v1.x", "nightly"]
+#         os: [macOS-latest, windows-latest, ubuntu-latest]
+
+#     steps:
+#       - name: Setup repo
+#         uses: actions/checkout@v2
+
+#       - name: Setup Deno
+#         uses: denolib/setup-deno@c7d7968ad4a59c159a777f79adddad6872ee8d96
+#         with:
+#           deno-version: ${{ matrix.deno }} # tests across multiple Deno versions
+
+#       - name: Cache Dependencies
+#         run: deno cache deps.ts
+
+#       - name: Run Tests
+#         run: deno test -A --unstable# This workflow uses actions that are not certified by GitHub.
+# # They are provided by a third-party and are governed by
+# # separate terms of service, privacy policy, and support
+# # documentation.
