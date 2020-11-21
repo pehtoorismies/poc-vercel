@@ -1,6 +1,6 @@
 name: ci
 
-on: [push, deployment, deployment_status]
+on: [deployment_status]
 
 jobs:
   e2e:
