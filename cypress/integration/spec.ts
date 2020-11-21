@@ -3,6 +3,6 @@ describe("Dummy test", () => {
     // find more Cypress commands at
     // https://on.cypress.io/api
     cy.visit("/");
-    cy.contains("Welcome to Next.js!");
+    cy.contains("Welcome to Hext.js!");
   });
 });
